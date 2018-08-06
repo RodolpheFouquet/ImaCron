@@ -92,18 +92,18 @@ class Input:
 
 	def Check(self) -> bool:
 		print("Checking that the files listed in " + self.xmlFile+ " are present")
-		if path.exists(inputDir + "/" + self.video.file):
+		if path.exists(inputDir + "/" + self.video.file) and (os.path.getsize(inputDir + "/" + self.video.file) == self.video.size):
 			print(self.video.file + " is present on the disk")
 		else:			
-			print(Fore.RED + self.video.file + " is NOT present on the disk")
+			print(Fore.RED + self.video.file + " is NOT present on the disk or has the wrong size")
 			print(Style.RESET_ALL)
 			return False
 		for audio in self.audios:
-			if path.exists(inputDir + "/" + audio.file):
+			if path.exists(inputDir + "/" + audio.file) and (os.path.getsize(inputDir + "/" + audio.file) == audio.size or audio.size == 0):
 				print(Fore.RED + audio.file + " is present on the disk")
 				print(Style.RESET_ALL)
 			else:			
-				print(Fore.RED + audio.file + " is NOT present on the disk")
+				print(Fore.RED + audio.file + " is NOT present on the disk or has the wrong size")
 				print(Style.RESET_ALL)
 				return False	
 		self.HasMuxedAudio()
