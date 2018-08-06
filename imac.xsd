@@ -1,0 +1,86 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="file" type="xs:string"/>
+  <xs:element name="size" type="xs:int"/>
+  <xs:element name="channels" type="xs:byte"/>
+  <xs:element name="format" type="xs:string"/>
+  <xs:element name="lang" type="xs:string"/>
+  <xs:element name="video">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="file"/>
+        <xs:element ref="size"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="audio">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="file">
+          <xs:annotation>
+            <xs:documentation>Audio language (Mandatory)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="channels">
+          <xs:annotation>
+            <xs:documentation>Audio is muxed in mp4 file, is the Audio format (Mandatory)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="format">
+          <xs:annotation>
+            <xs:documentation>Number of channels (supported: 2 for stereo, 4 for ambisonic, object based needs further discussion) (Mandatory) Example when audio is not muxed, or there is an additional audio track. Is the _stereo in the name necessary?</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="lang">
+          <xs:annotation>
+            <xs:documentation>ambisonic or stereo. Could link to an external file when not muxed with video (Mandatory)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="size">
+          <xs:annotation>
+            <xs:documentation>num of channels (Mandatory)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="targetFolder" type="xs:string"/>
+  <xs:element name="inputs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="video">
+          <xs:annotation>
+            <xs:documentation>Size of file in Bytes (Mandatory)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="audio" maxOccurs="unbounded" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Audio language (Mandatory) Size is optional. Must be provided when audio is in separate file</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="output">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="targetFolder">
+          <xs:annotation>
+            <xs:documentation>Do we need this?</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="content">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="inputs"/>
+        <xs:element ref="output"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="acm_virtual_folder"/>
+      <xs:attribute type="xs:string" name="lang"/>
+      <xs:attribute type="xs:int" name="programmeID"/>
+      <xs:attribute type="xs:string" name="title"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

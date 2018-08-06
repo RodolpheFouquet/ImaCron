@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content acm_virtual_folder="documentary" lang="en_GB" programmeID="497288" title="opera">
+    <inputs>
+        <video>
+            <file>programmeID_name.mp4</file>
+            <size>36522200</size>
+            <!-- Size of file in Bytes (Mandatory) -->
+        </video>
+        <audio>
+            <file>programmeID_name.mp4</file>
+            <!-- Audio is muxed in mp4 file, is the-->
+            <channels>4</channels>
+            <!-- Number of channels (supported: 2 for stereo, 4 for ambisonic, object based needs further discussion) (Mandatory)-->
+            <format>ambisonic</format>
+            <!-- ambisonic or stereo. Could link to an external file when not muxed with video (Mandatory)-->
+            <lang>ca</lang>
+            <!-- Audio language (Mandatory)-->
+        </audio>
+        <audio>
+            <lang>ca</lang>
+            <!-- Audio language (Mandatory)-->
+            <file>programmeID_ name_stereo.wav</file>
+            <!-- Example when audio is not muxed, or there is an additional audio track. Is the _stereo in the name necessary? -->
+            <format>stereo</format>
+            <!-- Audio format (Mandatory)-->
+            <channels>2</channels>
+            <!-- num of channels (Mandatory)-->
+            <size>787443</size>
+            <!-- Size is optional. Must be provided when audio is in separate file -->
+        </audio>
+    </inputs>
+    <output>
+        <!-- Do we need this? -->
+        <targetFolder>./outputs/opera</targetFolder>
+    </output>
+</content>
