@@ -6,16 +6,26 @@ import xmlschema
 import os.path
 from os import path
 from colorama import init, Fore, Back, Style
+import urllib.request
 import shutil
+import json
 import subprocess
 init()
 
+import argparse
+parser = argparse.ArgumentParser(description='ImaCron')
+requiredNamed = parser.add_argument_group('required named arguments')
+requiredNamed.add_argument('-i', '--input', help='Input directory', required=True)
+requiredNamed.add_argument('-o', '--output', help='Output directory', required=True)
+requiredNamed.add_argument('-w', '--work', help='Working directory', required=True)
+requiredNamed.add_argument('-e', '--error', help='Error directory', required=True)
+args = parser.parse_args()
+
 #global variables
-inputDir ="./input"
-outputDir= "./output"
-workDir  = "./working"
-errDir  = "./error"
-inputs = []
+inputDir = args.input 
+outputDir=  args.output 
+workDir  =  args.work 
+errDir  =  args.error 
 
 class Video:
 	def __init__(self, file: str, size: int):
@@ -45,6 +55,20 @@ class Input:
 				if audio.channels ==2:
 			 		return audio.file
 		return ""
+
+
+	def CallApi(self): 
+		body = {"pathXML":outputDir+"/"+self.xmlFile, 
+			"pathVideoLow": outputDir+"/"+self.output, 
+			"pathVideoHigh":outputDir+"/"+self.video.file}
+		
+		apiURL = "https://imac.gpac-licensing.com/acm/ws/insertLow.php"
+		req = urllib.request.Request(apiURL)
+		req.add_header('Content-Type', 'application/json; charset=utf-8')
+		jsondata = json.dumps(body)
+		jsonbytes = jsondata.encode('utf-8') 
+		req.add_header('Content-Length', len(jsonbytes))
+		response = urllib.request.urlopen(req, jsonbytes)
 
 	def HasMuxedAudio(self):
 		for audio in self.audios:
@@ -170,6 +194,7 @@ for s in onlyfiles:
 		continue
 	if work.Process() == 0:
 		work.MoveToDone()
+		work.CallApi()
 		print(Fore.GREEN + s + " has been processed successfully")
 		print(Style.RESET_ALL)
 
