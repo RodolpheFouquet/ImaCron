@@ -141,7 +141,7 @@ def validateXML(xmlFile: str) -> Input:
 	try:
 		tree = ET.parse(filePath)
 		root = tree.getroot()
-		my_schema = xmlschema.XMLSchema('imac.xsd')
+		my_schema = xmlschema.XMLSchema(os.path.dirname(os.path.realpath(__file__)) + '/imac.xsd')
 		if my_schema.is_valid(filePath):
 			print(filePath + " is a valid ACM XML")
 		else:
